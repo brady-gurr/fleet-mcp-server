@@ -38,3 +38,13 @@ In Claude: Settings -> Connectors -> Add custom connector, URL `https://<railway
 - Stateless: a fresh MCP server and transport per request.
 - Coast rate limit is 200 requests per 10 seconds per account (the client retries on 429).
 - Fleetio paging is cursor-based, up to 100 records per page.
+
+## Ready-made tools
+
+- `fuel_spend_report` – Coast spend, gallons, avg $/gal and rebates for a date range, grouped by vehicle, driver, department, location, merchant, card, week or month.
+- `fuel_flags` – exceptions worth a look: Coast flags, fills over tank size, very large fills, possible duplicates, a card on several trucks, non-fuel merchants, odometer backwards/unchanged, MPG outliers.
+- `vehicle_match` – pairs Coast and Fleetio vehicles (VIN, then plate, then name) and lists unmatched ones.
+- `trucks_needing_attention` – open issues, open faults, overdue renewals/inspections, open work orders per truck.
+- `vehicle_360` – one truck across both systems.
+
+Units: Coast `amount`, `costPerUnit`, `rebate` are cents; `purchaseDetails.fuel.volume` is thousandths of a gallon. All tools are GET-only.

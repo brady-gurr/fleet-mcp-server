@@ -3,9 +3,12 @@ import { McpServer } from '@modelcontextprotocol/server';
 import { NodeStreamableHTTPServerTransport } from '@modelcontextprotocol/node';
 import { registerCoastTools, coastConfigured } from './coast.js';
 import { registerFleetioTools, fleetioConfigured } from './fleetio.js';
+import { registerFleetTools } from './fleetTools.js';
 
 const SERVER_INSTRUCTIONS =
   'Kin Home fleet data connector (read-only): Coast fuel cards and Fleetio / Ford Pro. ' +
+  'Start with the ready-made tools when they fit: fuel_spend_report (dollars/gallons/price per gallon by vehicle, driver, department, location, merchant, card, week or month), fuel_flags (exceptions worth a look), vehicle_match (Coast vs Fleetio vehicles), trucks_needing_attention (open issues, faults, overdue renewals/inspections, work orders) and vehicle_360 (one truck end to end). ' +
+  'Units: Coast amounts, cost per unit and rebates are cents and fuel volume is thousandths of a gallon; the ready-made tools already convert to dollars and gallons. Fleetio fuel entries are empty (the Coast integration is not turned on there), so Coast is the source for fuel. Fuel flags are leads to check, not proof of misuse. ' +
   'Coast: coast_list and coast_get (purchases are the fuel transactions; also cards, people/drivers, vehicles, locations). ' +
   'Fleetio / Ford Pro: fleetio_list and fleetio_get (vehicles, fuel entries, odometer readings, work orders, issues, faults, inspections, contacts). ' +
   'Field names differ by system and are not documented here, so for any new question first list a few rows (limit 5) to see the real field names, then use filters and the summary option (groupBy + sum) to total things up. ' +
@@ -95,6 +98,7 @@ function buildServer() {
     );
   registerCoastTools(server); // no-op unless COAST_API_KEY is set
   registerFleetioTools(server); // no-op unless FLEETIO_API_KEY is set
+  registerFleetTools(server); // convenience tools; each registers only if its system(s) are configured
   return server;
 }
 

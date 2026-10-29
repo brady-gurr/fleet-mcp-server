@@ -83,6 +83,10 @@ export function registerCoastTools(server) {
     },
     async ({ resource, query = {}, all = false, maxPages = 5, fields, limit = 25, summary }) =>
       safe(async () => {
+        // Coast wants full date-times; accept plain YYYY-MM-DD too.
+        for (const [k, v] of Object.entries(query)) {
+          if (/(StartingAt|EndingBefore)$/.test(k) && /^\d{4}-\d{2}-\d{2}$/.test(String(v))) query[k] = `${v}T00:00:00Z`;
+        }
         const rows = [];
         let token;
         let totalCount;
